@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
@@ -13,9 +12,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const cors          = require("cors");
-
 const User = require('./models/User')
-
 mongoose
 	.connect(process.env.MONGODB_URL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
 	.then((x) => {
@@ -24,20 +21,15 @@ mongoose
 	.catch((err) => {
 		console.error('Error connecting to mongo', err);
 	});
-
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
-
 const app = express();
-
 // Middleware Setup
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 // Express View engine setup
-
 app.use(
 	require('node-sass-middleware')({
 		src: path.join(__dirname, 'public'),
@@ -45,7 +37,6 @@ app.use(
 		sourceMap: true
 	})
 );
-
 //CORS middleware
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -54,31 +45,24 @@ app.use((req, res, next) => {
   res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
   next();
 });
-
 app.use(cors({
   credentials: true,
   origin: ["http://localhost:3001"]
 }));
-
 app.use((req, res, next)=>{
   res.locals.user = req.user;
   next();
 })
-
-
 // Middleware de Session
 app.use(session({ secret: 'ourPassword', resave: true, saveUninitialized: true }));
-
 //Middleware para serializar al usuario
 passport.serializeUser((user, callback) => {
 	callback(null, user._id);
 });
-
 //Middleware para des-serializar al usuario
 passport.deserializeUser((id, callback) => {
 	User.findById(id).then((user) => callback(null, user)).catch((err) => callback(err));
 });
-
 //Middleware del Strategy
 passport.use(
 	new LocalStrategy({ passReqToCallback: true }, (req, username, password, next) => {
@@ -87,33 +71,27 @@ passport.use(
 				if (!user) {
 					return next(null, false, { message: 'Incorrect username' });
 				}
-
 				if (!bcrypt.compareSync(password, user.password)) {
 					return next(null, false, { message: 'Incorrect password' });
 				}
-
 				return next(null, user);
 			})
 			.catch((err) => next(err));
 	})
 );
-
 //Middleware de passport
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
-
 const index = require('./routes/index');
 app.use('/', index);
-
 const authRoutes = require('./routes/auth-routes');
 app.use('/', authRoutes);
-
+const placesRoutes = require('./routes/places-routes');
+app.use('/poi', placesRoutes);
 module.exports = app;
