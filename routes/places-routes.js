@@ -27,10 +27,13 @@ User.findById(userID)
   })
   .catch(err => console.error(err))
 })
-router.post('/from-wantToVisit/delete', (req, res, next) => {
-  const { userID, poi } = req.body
+router.post('/from-want-to-visit/delete/:poi', (req, res, next) => {
+  const { userID } = req.body
+  const { poi } = req.params
+  console.log(userID, poi)
   User.findById(userID)
     .then(user => {
+      console.log(user)
       const { wantToVisit } = user
       wantToVisit.splice(wantToVisit.indexOf(poi), 1)
       User.findOneAndUpdate({_id: userID}, {wantToVisit})
@@ -40,10 +43,13 @@ router.post('/from-wantToVisit/delete', (req, res, next) => {
     })
     .catch(err=>console.error(err))
 })
-router.post('/from-alreadyVisited/delete', (req, res, next) => {
-  const { userID, poi } = req.body
+router.post('/from-visited/delete/:poi', (req, res, next) => {
+  const { userID } = req.body
+  const { poi } = req.params
+  console.log(userID, poi)
   User.findById(userID)
     .then(user => {
+      console.log(user)
       const { alreadyVisited } = user
       alreadyVisited.splice(alreadyVisited.indexOf(poi), 1)
       User.findOneAndUpdate({_id: userID}, {alreadyVisited})
@@ -51,10 +57,11 @@ router.post('/from-alreadyVisited/delete', (req, res, next) => {
           res.status(200).json(result)
         })
     })
-    .catch(err => console.error(err))
+    .catch(err=>console.error(err))
 })
-router.post('/hotel', (req, res, next) => {
-  const { userID, hotel } = req.body
+router.post('/hotel/delete/:hotel', (req, res, next) => {
+  const { userID } = req.body
+  const { hotel } = req.params
   User.findById(userID)
     .then(user => {
       const { hotelsBooking } = user
