@@ -42,9 +42,9 @@ authRoutes.post('/signup', (req, res, next) => {
 		const aNewUser = new User({
 			username: username,
       password: hashPass
-      // leidos: [''],
-      // leyendo: [''],
-      // porLeer: ['']
+      // wantToVisit: [''],
+      // alreadyVisited: [''],
+      // hotelsBooking: ['']
 		});
 
 		aNewUser.save((err) => {

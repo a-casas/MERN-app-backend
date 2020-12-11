@@ -1,52 +1,52 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
-router.post('/from-leidos', (req, res, next) => {
+router.post('/from-wantToVisit', (req, res, next) => {
     const { userID, poi } = req.body
   User.findById(userID)
     .then(user => {
-      const { leidos } = user
-      leidos.splice(leidos.indexOf(poi), 1)
-      User.findOneAndUpdate({_id: userID}, {leidos: leidos, $push: {leyendo: poi}} )
+      const { wantToVisit } = user
+      wantToVisit.splice(wantToVisit.indexOf(poi), 1)
+      User.findOneAndUpdate({_id: userID}, {wantToVisit: wantToVisit, $push: {alreadyVisited: poi}} )
     .then(result => {
         res.status(200).json(result)
         })
     })
     .catch(err => console.error(err))
 })
-router.post('/from-leyendo', (req, res, next) => {
+router.post('/from-alreadyVisited', (req, res, next) => {
   const { userID, poi } = req.body
 User.findById(userID)
   .then(user => {
-    const { leyendo } = user
-    leyendo.splice(leyendo.indexOf(poi), 1)
-    User.findOneAndUpdate({_id: userID}, {leyendo, $push: {leidos: poi}} )
+    const { alreadyVisited } = user
+    alreadyVisited.splice(alreadyVisited.indexOf(poi), 1)
+    User.findOneAndUpdate({_id: userID}, {alreadyVisited, $push: {wantToVisit: poi}} )
   .then(result => {
       res.status(200).json(result)
       })
   })
   .catch(err => console.error(err))
 })
-router.post('/from-leidos/delete', (req, res, next) => {
+router.post('/from-wantToVisit/delete', (req, res, next) => {
   const { userID, poi } = req.body
   User.findById(userID)
     .then(user => {
-      const { leidos } = user
-      leidos.splice(leidos.indexOf(poi), 1)
-      User.findOneAndUpdate({_id: userID}, {leidos})
+      const { wantToVisit } = user
+      wantToVisit.splice(wantToVisit.indexOf(poi), 1)
+      User.findOneAndUpdate({_id: userID}, {wantToVisit})
         .then(result => {
           res.status(200).json(result)
         })
     })
     .catch(err=>console.error(err))
 })
-router.post('/from-leyendo/delete', (req, res, next) => {
+router.post('/from-alreadyVisited/delete', (req, res, next) => {
   const { userID, poi } = req.body
   User.findById(userID)
     .then(user => {
-      const { leyendo } = user
-      leyendo.splice(leyendo.indexOf(poi), 1)
-      User.findOneAndUpdate({_id: userID}, {leyendo})
+      const { alreadyVisited } = user
+      alreadyVisited.splice(alreadyVisited.indexOf(poi), 1)
+      User.findOneAndUpdate({_id: userID}, {alreadyVisited})
         .then(result => {
           res.status(200).json(result)
         })
@@ -57,9 +57,9 @@ router.post('/hotel', (req, res, next) => {
   const { userID, hotel } = req.body
   User.findById(userID)
     .then(user => {
-      const { porLeer } = user
-      porLeer.splice(porLeer.indexOf(hotel), 1)
-      User.findOneAndUpdate({_id: userID}, {porLeer})
+      const { hotelsBooking } = user
+      hotelsBooking.splice(hotelsBooking.indexOf(hotel), 1)
+      User.findOneAndUpdate({_id: userID}, {hotelsBooking})
         .then(result => {
           res.status(200).json(result)
         })

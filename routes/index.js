@@ -7,8 +7,8 @@ router.get('/', (req, res, next) => {
   res.send('Home')
 });
 
-router.post('/leidos', (req, res)=>{
-  User.findByIdAndUpdate(req.body.userID, {$push: {leidos: req.body.mangaID}})
+router.post('/wantToVisit', (req, res)=>{
+  User.findByIdAndUpdate(req.body.userID, {$push: {wantToVisit: req.body.mangaID}})
   .then((result)=>{
     console.log(result)
   })
@@ -17,8 +17,8 @@ router.post('/leidos', (req, res)=>{
   })
 })
 
-router.post('/leyendo', (req, res)=>{
-  User.findByIdAndUpdate(req.body.userID, {$push: {leyendo: req.body.mangaID}})
+router.post('/alreadyVisited', (req, res)=>{
+  User.findByIdAndUpdate(req.body.userID, {$push: {alreadyVisited: req.body.mangaID}})
   .then((result)=>{
     console.log(result)
   })
@@ -27,8 +27,8 @@ router.post('/leyendo', (req, res)=>{
   })
 })
 
-router.post('/porLeer', (req, res)=>{
-  User.findByIdAndUpdate(req.body.userID, {$push: {porLeer: req.body.mangaID}})
+router.post('/hotelsBooking', (req, res)=>{
+  User.findByIdAndUpdate(req.body.userID, {$push: {hotelsBooking: req.body.mangaID}})
   .then((result)=>{
     console.log(result)
   })
@@ -52,9 +52,9 @@ router.get('/getUser/:id', (req, res)=>{
 
 /* GET: Página principal (profile page) donde podré ver los tres grupos */
 
-/* GET: Ver mis mangas leidos */
+/* GET: Ver mis mangas wantToVisit */
 
-/* GET: Ver los mangas que estoy leyendo */
+/* GET: Ver los mangas que estoy alreadyVisited */
 
 /* GET: Ver mis mangas por leer */
 
@@ -71,9 +71,9 @@ router.get('/all-users', (req, res)=>{
   })
 })
 
-/* POST: Añadir manga a Leidos */
+/* POST: Añadir manga a WantToVisit */
 
-/* POST: Añadir manga a Leyendo */
+/* POST: Añadir manga a AlreadyVisited */
 
 /* POST: Añadir manga a Por leer */
 
@@ -81,9 +81,9 @@ router.get('/all-users', (req, res)=>{
 
 /* PUT: Editar usuario */
 
-/* PUT: Editar Leidos */
+/* PUT: Editar WantToVisit */
 
-/* PUT: Editar Leyendo */
+/* PUT: Editar AlreadyVisited */
 
 /* PUT: Editar Por Leer */
 
