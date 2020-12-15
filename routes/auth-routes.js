@@ -12,27 +12,28 @@ const User = require('../models/User');
 authRoutes.post('/signup', (req, res, next) => {
 	const username = req.body.username;
 	const password = req.body.password;
-
+console.log(username)
 	if (!username || !password) {
-		res.status(400).json({ message: 'Provide username and password' });
+		// res.status(400)
+		res.json({ message: 'Provide username and password' });
 		return;
 	}
 
 	if (password.length < 7) {
 		res
-			.status(400)
+			// .status(400)
 			.json({ message: 'Please make your password at least 8 characters long for security purposes.' });
 		return;
 	}
 
 	User.findOne({ username }, (err, foundUser) => {
 		if (err) {
-			res.status(500).json({ message: 'Username check went bad.' });
+			res.json({ message: 'Username check went bad.' });
 			return;
 		}
 
 		if (foundUser) {
-			res.status(400).json({ message: 'Username taken. Choose another one.' });
+			res.json({ message: 'Username taken. Choose another one.' });
 			return;
 		}
 
@@ -49,7 +50,7 @@ authRoutes.post('/signup', (req, res, next) => {
 
 		aNewUser.save((err) => {
 			if (err) {
-				res.status(400).json({ message: 'Saving user to database went wrong.' });
+				res.json({ message: 'Saving user to database went wrong.' });
 				return;
 			}
 
@@ -57,7 +58,7 @@ authRoutes.post('/signup', (req, res, next) => {
 			// .login() here is actually predefined passport method
 			req.login(aNewUser, (err) => {
 				if (err) {
-					res.status(500).json({ message: 'Login after signup went bad.' });
+					res.json({ message: 'Login after signup went bad.' });
 					return;
 				}
 
@@ -96,12 +97,29 @@ authRoutes.post('/signup', (req, res, next) => {
 // 	})(req, res, next);
 // });
 
-authRoutes.post('/login', passport.authenticate("local", {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true,
-  passReqToCallback: true
-}))
+
+//AUTHROUTES SIN MENSAJES DE ERROR FUNCIONALES
+// authRoutes.post('/login', passport.authenticate("local", {
+//   successRedirect: '/',
+//   failureRedirect: '/login',
+//   failureFlash: true,
+//   passReqToCallback: true
+// }))
+
+authRoutes.post('/login', (req, res, next) => {
+	passport.authenticate('local', (err, theUser, failureDetails) => {
+			if (err) {
+					res.json({ message: 'Error authenticating user' });
+					return;
+			}
+			if (!theUser) {
+					res.json(failureDetails);
+					return;
+			}
+			req.login(theUser, err => err ? res.json({ message: 'Session error' }) : res.status(200).json(theUser))
+	})(req, res, next)
+})
+
 
 authRoutes.post('/logout', (req, res, next) => {
   // req.logout() is defined by passport
