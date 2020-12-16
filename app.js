@@ -13,6 +13,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const cors          = require("cors");
 const User = require('./models/User')
+const cookieSession = require('cookie-session')
+
 mongoose
 	.connect(process.env.MONGODB_URL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false})
 	.then((x) => {
@@ -53,6 +55,24 @@ app.use((req, res, next)=>{
   res.locals.user = req.user;
   next();
 })
+
+app.set('trust proxy', 1)
+app.use(cookieSession({
+    name:'session',
+    keys: ['key1', 'key2'],
+    sameSite: 'none',
+    secure: true
+}))
+
+app.use(session ({
+	secret: `${process.env.DATABASE}`,
+	resave: true,
+	saveUninitialized: true,
+	cookie: {
+			sameSite: 'none',
+			secure: true
+	}
+}))
 // Middleware de Session
 app.use(session({ secret: 'ourPassword', resave: true, saveUninitialized: true }));
 //Middleware para serializar al usuario
