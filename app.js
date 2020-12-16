@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 });
 app.use(cors({
   credentials: true,
-  origin: ["http://localhost:3001"]
+  origin: ["http://localhost:3001", "https://jappandgo.netlify.app"]
 }));
 app.use((req, res, next)=>{
   res.locals.user = req.user;
