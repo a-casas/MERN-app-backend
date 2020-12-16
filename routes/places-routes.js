@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/User')
+
 router.post('/from-wantToVisit', (req, res, next) => {
     const { userID, poi } = req.body
   User.findById(userID)
@@ -14,6 +15,7 @@ router.post('/from-wantToVisit', (req, res, next) => {
     })
     .catch(err => console.error(err))
 })
+
 router.post('/from-alreadyVisited', (req, res, next) => {
   const { userID, poi } = req.body
 User.findById(userID)
@@ -27,6 +29,7 @@ User.findById(userID)
   })
   .catch(err => console.error(err))
 })
+
 router.post('/from-want-to-visit/delete/:poi', (req, res, next) => {
   const { userID } = req.body
   const { poi } = req.params
@@ -43,6 +46,7 @@ router.post('/from-want-to-visit/delete/:poi', (req, res, next) => {
     })
     .catch(err=>console.error(err))
 })
+
 router.post('/from-visited/delete/:poi', (req, res, next) => {
   const { userID } = req.body
   const { poi } = req.params
@@ -59,6 +63,7 @@ router.post('/from-visited/delete/:poi', (req, res, next) => {
     })
     .catch(err=>console.error(err))
 })
+
 router.post('/hotel/delete/:hotel', (req, res, next) => {
   const { userID } = req.body
   const { hotel } = req.params

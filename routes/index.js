@@ -48,17 +48,6 @@ router.get('/getUser/:id', (req, res)=>{
   })
 })
 
-/* GET: Ver todos los mangas */
-
-/* GET: Página principal (profile page) donde podré ver los tres grupos */
-
-/* GET: Ver mis mangas wantToVisit */
-
-/* GET: Ver los mangas que estoy alreadyVisited */
-
-/* GET: Ver mis mangas por leer */
-
-/* GET: Página independiente de cada manga */
 
 /* GET: Ver todos los usuarios */
 router.get('/all-users', (req, res)=>{
@@ -70,26 +59,6 @@ router.get('/all-users', (req, res)=>{
     res.send(err)
   })
 })
-
-/* POST: Añadir manga a WantToVisit */
-
-/* POST: Añadir manga a AlreadyVisited */
-
-/* POST: Añadir manga a Por leer */
-
-/* POST: Crear un manga nuevo */
-
-/* PUT: Editar usuario */
-
-/* PUT: Editar WantToVisit */
-
-/* PUT: Editar AlreadyVisited */
-
-/* PUT: Editar Por Leer */
-
-/* DELETE: Eliminar usuario */
-
-/* DELETE: Eliminar manga */
 
 
 
